@@ -1,4 +1,4 @@
-package vexriscv.demo
+package tinyvision.toplevels
 
 import spinal.core._
 import spinal.lib._
@@ -13,12 +13,20 @@ import vexriscv.plugin._
 import vexriscv.{Riscv, VexRiscv, VexRiscvConfig, plugin}
 import vexriscv.ip.fpu.FpuParameter
 
-object GenRISCV_wb {
+object gen_tiny_vexriscv {
+
   def main(args: Array[String]) {
-    val report = SpinalVerilog{
-      val cpuConfig = VexRiscvConfig(
-        plugins = List(
-          new IBusCachedPlugin(
+    val report = SpinalVerilog(new Component {
+      val cpu = tiny_vexriscv
+    })
+  }
+}
+
+
+object tiny_vexriscv {
+  val cpuConfig = VexRiscvConfig(
+    plugins = List(
+      new IBusCachedPlugin(
             resetVector = 0xA0000000l,
             prediction = DYNAMIC,
             config = InstructionCacheConfig(
@@ -139,8 +147,6 @@ object GenRISCV_wb {
           }
           case _ =>
         }
-        }
-      cpu
-    }
+      }
+    cpu
   }
-}
